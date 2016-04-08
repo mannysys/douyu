@@ -29,7 +29,7 @@ app.get('/', function(req, res){
   res.render('danmu');
 });
 
-//socket·şÎñÆ÷¶Ë
+//socketæœåŠ¡å™¨ç«¯
 require('./lib/socket')(server);
 server.listen(3000,function(){
   console.log('App start,port 3000.');
