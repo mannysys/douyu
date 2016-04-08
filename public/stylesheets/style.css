@@ -1,0 +1,21 @@
+body {
+  padding: 20px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.showDanmu{
+  width: 95%;
+  height: 500px;
+  border: 1px #ccc solid;
+  overflow-y: scroll;
+  float: left;
+  list-style: none;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  line-height: 25px;
+}
+

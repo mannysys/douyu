@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+
+</head>
+<body>
+
+<div>
+    <ul id="showDanmu" class="showDanmu"></ul>
+</div>
+
+
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<script>
+    var socket = io();
+    var linked = false;
+
+    socket.on('connect', function(){
+        linked = true; //与服务器建立连接成功
+    });
+    /*
+     gs  礼物显示样式
+     str  用户战斗力
+     hits  礼物连击次数默认值1表示1连击
+     rg  房间身份组默认值1表示普通用户
+
+
+     gs@=3       1鱼丸 2心520  3赞  4 666 5飞机  6火箭
+     str@=1000    表示1000战斗力
+     hits@=700   表示700连击
+     rg@=5      5表示主播
+
+    */
+    //监听服务器端弹幕数据
+    socket.on('danmu', function(data){
+        if(linked){
+            console.log(data.dydm);
+            var data =  data.dydm.split('/');
+            var rg = '',    //房间身份，1用户5主播
+                nn = '',    //昵称
+                txt = '';   //弹幕
+            data.forEach(function(item){
+                if(item.indexOf('rg') !== -1){
+                    //房间身份
+                    if(item.replace('rg@=','')){
+                        switch(parseInt(item.replace('rg@=',''))){
+                            case 4:
+                                rg = '房管-';
+                            case 5:
+                                rg = '主播-';
+                        }
+                    }else{
+                        rg = '';
+                    }
+                }else if(item.indexOf('nn') !== -1){
+                    nn = item.replace('nn@=','');  //昵称
+                }else if(item.indexOf('txt') !== -1){
+                    txt = item.replace('txt@=',''); //弹幕
+                }
+            });
+            //输出弹幕数据
+            log(rg + nn + '：' + txt);
+        }
+    });
+
+    //提示信息
+    function log(msg){
+        $("#showDanmu").append($('<li>').text(msg));
+        $("#showDanmu").scrollTop($("#showDanmu")[0].scrollHeight);
+    }
+
+
+</script>
+</body>
+</html>
